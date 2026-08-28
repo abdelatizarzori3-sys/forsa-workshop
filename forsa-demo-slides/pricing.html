@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Changa:wght@500;600;700;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; }
+    .slide-container { width: 1280px; min-height: 720px; direction: rtl; color: #1c1c1c; font-family: "IBM Plex Sans Arabic", sans-serif; background-color: #f9f8f6; background-image: linear-gradient(rgba(28,28,28,.055) 1px, transparent 1px), linear-gradient(90deg, rgba(28,28,28,.055) 1px, transparent 1px); background-size: 25px 25px; }
+    .head { display: flex; align-items: flex-end; justify-content: space-between; padding-top: 48px; padding-right: 78px; padding-left: 78px; }
+    .eyebrow { display: flex; align-items: center; gap: 10px; color: #c24127; font-size: 13px; font-weight: 700; }
+    .eyebrow strong { font-family: Changa, sans-serif; font-size: 20px; }
+    h1 { margin-top: 5px; font-family: Changa, sans-serif; font-size: 43px; letter-spacing: -1.6px; line-height: 1.25; }
+    .intro { max-width: 345px; color: #59625a; font-size: 15px; line-height: 1.85; }
+    .workspace { display: grid; grid-template-columns: 1.14fr .86fr; gap: 34px; margin-top: 43px; padding-right: 78px; padding-left: 78px; }
+    .equation { min-height: 350px; padding-top: 26px; padding-right: 30px; padding-left: 30px; border-top: 4px solid #1c1c1c; background: rgba(249,248,246,.86); box-shadow: 7px 7px 0 #ded9cf; }
+    .equation-title { display: flex; align-items: center; justify-content: space-between; color: #59625a; font-size: 13px; font-weight: 700; }
+    .equation-title span { display: inline-block; padding-top: 6px; padding-right: 10px; padding-left: 10px; min-height: 28px; background: #1c1c1c; color: #d7ff45; font-size: 10px; }
+    .formula { display: grid; grid-template-columns: 1fr 54px 1fr 54px 1fr; align-items: stretch; margin-top: 31px; }
+    .formula-block { min-height: 166px; padding-top: 22px; padding-right: 18px; padding-left: 18px; border: 2px solid #1c1c1c; background: #f9f8f6; }
+    .formula-block.net { background: #d7ff45; }
+    .formula-block span { display: block; color: #5d655e; font-size: 12px; font-weight: 700; }
+    .formula-block b { display: block; margin-top: 16px; direction: ltr; color: #1c1c1c; font-family: Changa, sans-serif; font-size: 35px; line-height: 1; text-align: right; letter-spacing: -1px; }
+    .formula-block small { display: block; margin-top: 10px; color: #5a655a; font-size: 10px; line-height: 1.5; }
+    .operator { display: grid; place-items: center; color: #c24127; font-family: Changa, sans-serif; font-size: 38px; }
+    .calc-line { display: flex; align-items: center; gap: 9px; margin-top: 29px; padding-top: 15px; border-top: 1px dashed #aaa9a3; color: #526057; font-size: 12px; line-height: 1.7; }
+    .calc-line i { width: 11px; height: 11px; flex: none; background: #c24127; transform: rotate(45deg); }
+    .margin-panel { min-height: 350px; padding-top: 25px; padding-right: 27px; padding-left: 27px; border: 2px solid #1c1c1c; background: #cbd8be; box-shadow: 7px 7px 0 #1c1c1c; }
+    .margin-panel .label { display: flex; align-items: center; justify-content: space-between; color: #445045; font-size: 12px; font-weight: 700; }
+    .dots { display: flex; gap: 4px; }
+    .dots i { width: 5px; height: 5px; background: #1c1c1c; }
+    .meter-row { display: flex; align-items: center; gap: 26px; margin-top: 28px; }
+    .meter { display: grid; width: 142px; height: 142px; place-items: center; border-radius: 50%; background: conic-gradient(#1c1c1c 0 324deg, rgba(28,28,28,.18) 324deg 360deg); }
+    .meter-inner { display: grid; width: 106px; height: 106px; place-content: center; border-radius: 50%; background: #cbd8be; text-align: center; }
+    .meter-inner b { font-family: Changa, sans-serif; font-size: 33px; line-height: 1; }
+    .meter-inner span { margin-top: 4px; color: #526057; font-size: 10px; font-weight: 700; }
+    .target { border-right: 2px solid #1c1c1c; padding-right: 14px; }
+    .target span { display: block; color: #566156; font-size: 12px; font-weight: 700; }
+    .target b { display: block; margin-top: 9px; font-family: Changa, sans-serif; font-size: 33px; line-height: 1; }
+    .target small { display: block; margin-top: 6px; color: #556055; font-size: 10px; }
+    .note { margin-top: 27px; padding-top: 13px; border-top: 2px solid rgba(28,28,28,.35); color: #455244; font-size: 12px; font-weight: 600; line-height: 1.75; }
+    .note b { color: #1c1c1c; }
+    .footer { display: flex; align-items: center; justify-content: space-between; margin-top: 25px; margin-right: 78px; margin-left: 78px; padding-top: 11px; border-top: 1px solid #cdcac3; color: #69716a; font-size: 10px; }
+    .footer strong { color: #1c1c1c; font-family: Changa, sans-serif; font-size: 13px; }
+  </style>
+</head>
+<body>
+  <div class="slide-container">
+    <header class="head">
+      <div><p class="eyebrow"><strong>02</strong><span>محطة التسعير</span></p><h1>السعر قرار تشغيل، لا تخمين.</h1></div>
+      <p class="intro">تضع «فرصة» السعر والكلفة والهدف في مساحة واحدة، كي ترى صافي الطلب قبل أن ترسل عرضك.</p>
+    </header>
+    <main class="workspace">
+      <section class="equation" aria-label="معادلة صافي الربح">
+        <div class="equation-title"><span>مثال داخل الأداة</span><p>المعادلة الأساسية</p></div>
+        <div class="formula">
+          <div class="formula-block"><span>سعر العرض</span><b>150 ر.س</b><small>ما يدفعه العميل للخدمة المحددة</small></div>
+          <div class="operator">−</div>
+          <div class="formula-block"><span>كلفة التنفيذ</span><b>15 ر.س</b><small>أدوات، وقت، أو أي تكلفة مباشرة</small></div>
+          <div class="operator">=</div>
+          <div class="formula-block net"><span>صافي كل طلب</span><b>135 ر.س</b><small>المبلغ بعد طرح كلفة التنفيذ</small></div>
+        </div>
+        <p class="calc-line"><i></i><span>غيّر السعر أو الكلفة، ثم راقب كيف يتبدّل الصافي قبل اتخاذ قرار العرض.</span></p>
+      </section>
+      <aside class="margin-panel" aria-label="ملخص هامش الربح والهدف">
+        <div class="label"><span>ملخص واضح</span><span class="dots"><i></i><i></i><i></i></span></div>
+        <div class="meter-row"><div class="meter"><div class="meter-inner"><b>90%</b><span>هامش تقريبي</span></div></div><div class="target"><span>للاقتراب من هدفك</span><b>5 طلبات</b><small>إذا كان هدف اليوم 600 ر.س</small></div></div>
+        <p class="note"><b>قاعدة الورشة:</b> إن كان الهامش ضيقاً، قلّل نطاق الخدمة أو عدّل السعر قبل الحديث مع العميل.</p>
+      </aside>
+    </main>
+    <footer class="footer"><strong>فرصة / ورشة بيع الخدمات</strong><span>الأرقام تقديرية وقابلة للتعديل وليست ضماناً للدخل.</span></footer>
+  </div>
+</body>
+</html>

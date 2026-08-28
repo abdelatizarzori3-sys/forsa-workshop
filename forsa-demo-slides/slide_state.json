@@ -1,0 +1,100 @@
+{
+  "project_info": {
+    "title": "فرصة",
+    "created": 1787870349.659,
+    "last_updated": 1787870480.963,
+    "total_slides": 8
+  },
+  "slides": [
+    {
+      "id": "cover",
+      "state": "edited",
+      "pageNum": 1
+    },
+    {
+      "id": "problem",
+      "state": "edited",
+      "pageNum": 2
+    },
+    {
+      "id": "workflow",
+      "state": "edited",
+      "pageNum": 3
+    },
+    {
+      "id": "choose_service",
+      "state": "edited",
+      "pageNum": 4
+    },
+    {
+      "id": "pricing",
+      "state": "edited",
+      "pageNum": 5
+    },
+    {
+      "id": "proposal",
+      "state": "edited",
+      "pageNum": 6
+    },
+    {
+      "id": "action_plan",
+      "state": "edited",
+      "pageNum": 7
+    },
+    {
+      "id": "closing",
+      "state": "edited",
+      "pageNum": 8
+    }
+  ],
+  "outline": [
+    {
+      "id": "cover",
+      "title": "فرصة",
+      "summary": "غلاف يعرّف الأداة بوصفها ورشة عملية لتحويل مهارة صغيرة إلى عرض خدمة واضح.",
+      "image_plan": "Use a suitable image if needed"
+    },
+    {
+      "id": "problem",
+      "title": "المشكلة التي تعالجها الأداة",
+      "summary": "ثلاثة عوائق شائعة قبل إرسال أول عرض، وكيف تنظّمها فرصة.",
+      "image_plan": "Use a suitable image if needed"
+    },
+    {
+      "id": "workflow",
+      "title": "المسار التشغيلي",
+      "summary": "شرح المحطات الثلاث: اختيار الخدمة، تثبيت السعر، إرسال العرض.",
+      "image_plan": "Use a suitable image if needed"
+    },
+    {
+      "id": "choose_service",
+      "title": "01 — اختر خدمة قابلة للبيع",
+      "summary": "توضيح مبدأ تقليص نطاق الخدمة واختيار عرض صغير قابل للتسليم.",
+      "image_plan": "Use a suitable image if needed"
+    },
+    {
+      "id": "pricing",
+      "title": "02 — افحص التسعير",
+      "summary": "شرح العلاقة بين سعر العرض وكلفة التنفيذ وصافي كل طلب.",
+      "image_plan": "Use a suitable image if needed"
+    },
+    {
+      "id": "proposal",
+      "title": "03 — جهّز رسالة العرض",
+      "summary": "توضيح بنية رسالة العرض القصيرة وكيفية تخصيصها قبل الإرسال.",
+      "image_plan": "Use a suitable image if needed"
+    },
+    {
+      "id": "action_plan",
+      "title": "خطة بداية خلال 90 دقيقة",
+      "summary": "عرض خطة عمل من ثلاث مهام صغيرة تحوّل العرض إلى بداية قابلة للقياس.",
+      "image_plan": "Use a suitable image if needed"
+    },
+    {
+      "id": "closing",
+      "title": "افتح الورشة. اختر عرضاً. أرسله اليوم.",
+      "summary": "خلاصة فوائد الأداة ودعوة إلى البدء من دون وعود مالية.",
+      "image_plan": "Use a suitable image if needed"
+    }
+  ]
+}

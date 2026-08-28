@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Changa:wght@500;600;700;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; }
+    .slide-container { width: 1280px; min-height: 720px; display: grid; grid-template-columns: 1.2fr .8fr; direction: rtl; background: #19231e; color: #f9f8f6; font-family: "IBM Plex Sans Arabic", sans-serif; overflow: hidden; }
+    .copy { display: flex; flex-direction: column; align-items: flex-start; justify-content: center; padding-top: 78px; padding-right: 82px; padding-left: 42px; }
+    .brand { display: flex; align-items: center; gap: 10px; margin-bottom: 44px; color: #d7ff45; font-family: Changa, sans-serif; font-weight: 800; font-size: 28px; }
+    .mark { width: 34px; height: 34px; position: relative; background: #d7ff45; clip-path: polygon(9% 0, 100% 0, 100% 79%, 77% 100%, 77% 75%, 30% 75%, 30% 100%, 0 100%, 0 22%); }
+    .mark::after { content: ""; position: absolute; width: 13px; height: 13px; top: 9px; right: 10px; background: #19231e; border-radius: 50%; }
+    .kicker { display: inline-flex; align-items: center; gap: 8px; padding-top: 7px; padding-right: 11px; padding-left: 11px; min-height: 31px; background: #f9f8f6; color: #19231e; font-weight: 700; font-size: 13px; transform: rotate(-1.5deg); box-shadow: 4px 4px 0 #c24127; }
+    .kicker b { color: #c24127; font-family: Changa, sans-serif; }
+    h1 { max-width: 620px; margin-top: 26px; color: #f9f8f6; font-family: Changa, sans-serif; font-size: 65px; line-height: 1.2; letter-spacing: -2px; font-weight: 800; }
+    h1 em { color: #d7ff45; font-style: normal; }
+    .description { max-width: 525px; margin-top: 22px; color: #c5cec6; font-size: 19px; line-height: 1.9; }
+    .footer-line { display: flex; align-items: center; gap: 11px; margin-top: 47px; color: #aeb9ae; font-size: 13px; }
+    .footer-line span { width: 43px; height: 2px; background: #d7ff45; }
+    .art { position: relative; display: flex; align-items: center; justify-content: center; padding-top: 68px; padding-right: 44px; padding-left: 44px; background-color: #e9e3d6; background-image: linear-gradient(rgba(25,35,30,.09) 1px, transparent 1px), linear-gradient(90deg, rgba(25,35,30,.09) 1px, transparent 1px); background-size: 26px 26px; }
+    .paper { position: relative; width: 330px; min-height: 418px; border: 2px solid #19231e; background: #f9f8f6; box-shadow: 13px 13px 0 rgba(25,35,30,.14); transform: rotate(4deg); }
+    .paper::before { content: ""; position: absolute; top: 22px; right: 22px; left: 22px; height: 55px; border-bottom: 2px solid #19231e; background: linear-gradient(90deg,#d7ff45 0 44%,transparent 44%); }
+    .paper::after { content: "01"; position: absolute; top: 102px; right: 26px; color: #19231e; font-family: Changa, sans-serif; font-size: 88px; font-weight: 800; }
+    .card { position: absolute; width: 208px; min-height: 114px; padding-top: 17px; padding-right: 18px; padding-left: 18px; border: 2px solid #19231e; background: #d7ff45; color: #19231e; box-shadow: 6px 6px 0 #19231e; transform: rotate(-8deg); }
+    .card.one { top: 125px; right: 37px; }
+    .card.two { bottom: 84px; left: 21px; background: #c24127; color: #f9f8f6; transform: rotate(7deg); }
+    .card b { display: block; font-family: Changa, sans-serif; font-size: 20px; }
+    .card span { display: block; margin-top: 5px; font-size: 12px; font-weight: 600; }
+    .pin { position: absolute; top: 47px; left: 50px; width: 14px; height: 14px; border-radius: 50%; background: #c24127; box-shadow: 0 2px 0 #19231e; }
+  </style>
+</head>
+<body>
+  <div class="slide-container">
+    <section class="copy">
+      <div class="brand"><span class="mark"></span><span>فرصة</span></div>
+      <div class="kicker"><b>عرض توضيحي</b><span>ورشة بيع الخدمات</span></div>
+      <h1>من مهارةٍ صغيرة إلى عرضٍ <em>واضح.</em></h1>
+      <p class="description">مسار عملي يساعدك على تحديد الخدمة، فحص السعر، وصياغة عرض جاهز للإرسال خلال جلسة عمل واحدة.</p>
+      <div class="footer-line"><span></span><p>اختَر. سعّر. أرسِل.</p></div>
+    </section>
+    <section class="art" aria-label="تكوين بصري يمثل قصاصات عمل متداخلة">
+      <div class="paper"><span class="pin"></span></div>
+      <div class="card one"><b>خدمة واحدة</b><span>نتيجة مفهومة وموعد محدد</span></div>
+      <div class="card two"><b>اليوم</b><span>ابدأ بأصغر خطوة</span></div>
+    </section>
+  </div>
+</body>
+</html>

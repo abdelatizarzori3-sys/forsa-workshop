@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Changa:wght@500;600;700;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; }
+    .slide-container { width: 1280px; min-height: 720px; direction: rtl; color: #1c1c1c; font-family: "IBM Plex Sans Arabic", sans-serif; background-color: #f9f8f6; background-image: linear-gradient(rgba(28,28,28,.055) 1px,transparent 1px), linear-gradient(90deg,rgba(28,28,28,.055) 1px,transparent 1px); background-size: 25px 25px; }
+    .header { display: flex; align-items: flex-end; justify-content: space-between; padding-top: 48px; padding-right: 76px; padding-left: 76px; }
+    .eyebrow { display: flex; align-items: center; gap: 8px; color: #c24127; font-size: 13px; font-weight: 700; }
+    .eyebrow span { display: inline-block; width: 10px; height: 10px; background: #c24127; transform: rotate(45deg); }
+    h1 { margin-top: 9px; font-family: Changa, sans-serif; font-size: 43px; line-height: 1.25; letter-spacing: -1.5px; }
+    .intro { max-width: 318px; color: #566057; font-size: 15px; line-height: 1.85; }
+    .content { display: grid; grid-template-columns: 388px 1fr; gap: 37px; margin-top: 38px; padding-right: 76px; padding-left: 76px; }
+    .time-panel { display: flex; flex-direction: column; justify-content: space-between; min-height: 466px; padding-top: 31px; padding-right: 30px; padding-left: 30px; background: #1c1c1c; color: #f9f8f6; box-shadow: 8px 8px 0 #c24127; }
+    .time-panel .top { display: flex; align-items: center; justify-content: space-between; }
+    .top small { color: #bec9bd; font-size: 12px; font-weight: 700; }
+    .clock { display: grid; place-items: center; width: 50px; height: 50px; border: 2px solid #d7ff45; color: #d7ff45; font-family: Changa, sans-serif; font-size: 14px; font-weight: 800; }
+    .minutes { margin-top: 20px; font-family: Changa, sans-serif; font-size: 84px; line-height: .9; letter-spacing: -4px; }
+    .minutes span { display: block; margin-top: 13px; color: #d7ff45; font-size: 22px; letter-spacing: -1px; }
+    .scale { display: flex; align-items: flex-end; gap: 11px; margin-top: 18px; height: 29px; }
+    .scale i { display: block; width: 2px; height: 10px; background: #7c887e; }
+    .scale i:nth-child(3n) { height: 26px; background: #d7ff45; }
+    .result { padding-top: 20px; border-top: 1px solid rgba(249,248,246,.28); }
+    .result b { display: block; color: #d7ff45; font-family: Changa, sans-serif; font-size: 17px; }
+    .result p { margin-top: 6px; color: #c4cec3; font-size: 13px; line-height: 1.8; }
+    .tasks { display: grid; gap: 13px; align-content: start; }
+    .task { display: grid; grid-template-columns: 74px 1fr 184px; align-items: stretch; min-height: 136px; border: 2px solid #1c1c1c; background: rgba(249,248,246,.87); }
+    .task-number { display: flex; align-items: center; justify-content: center; border-left: 1px solid #1c1c1c; color: #1c1c1c; font-family: Changa, sans-serif; font-size: 30px; font-weight: 800; }
+    .task-main { padding-top: 25px; padding-right: 26px; padding-left: 20px; }
+    .task-main h2 { font-family: Changa, sans-serif; font-size: 22px; line-height: 1.25; letter-spacing: -.8px; }
+    .task-main p { margin-top: 7px; color: #59625a; font-size: 13px; line-height: 1.7; }
+    .output { display: flex; flex-direction: column; justify-content: center; padding-top: 16px; padding-right: 16px; padding-left: 16px; border-right: 1px dashed #aaa9a3; color: #59625a; font-size: 11px; line-height: 1.55; }
+    .output b { display: block; margin-bottom: 6px; color: #1c1c1c; font-size: 12px; }
+    .check { display: inline-grid; place-items: center; width: 22px; height: 22px; margin-top: 11px; border: 2px solid #1c1c1c; color: #1c1c1c; font-weight: 800; font-size: 14px; }
+    .task.complete { background: #d7ff45; }
+    .task.complete .check { background: #1c1c1c; color: #d7ff45; }
+    .focus-note { display: flex; align-items: center; gap: 10px; margin-top: 17px; padding-top: 10px; border-top: 2px solid #1c1c1c; color: #1c1c1c; font-size: 12px; font-weight: 700; }
+    .focus-note i { display: inline-block; width: 12px; height: 12px; background: #c24127; transform: rotate(45deg); }
+  </style>
+</head>
+<body>
+  <div class="slide-container">
+    <header class="header">
+      <div>
+        <div class="eyebrow"><span></span><b>المحطة 03</b><span>خطة التنفيذ</span></div>
+        <h1>لا تحتاج إلى خطة ضخمة؛ تحتاج إلى تنفيذ منضبط.</h1>
+      </div>
+      <p class="intro">بعد تجهيز العرض، تقودك «فرصة» إلى بداية صغيرة تستطيع إنهاءها اليوم ومراجعة أثرها لاحقاً.</p>
+    </header>
+    <main class="content">
+      <aside class="time-panel" aria-label="مدة خطة البداية">
+        <div>
+          <div class="top"><small>خطة بداية قصيرة</small><div class="clock">90</div></div>
+          <div class="minutes">90<span>دقيقة عمل مركّز</span></div>
+          <div class="scale"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        </div>
+        <div class="result"><b>الناتج اليومي</b><p>جهة مناسبة، عرض مخصص، وخمس محاولات تواصل منظمة.</p></div>
+      </aside>
+      <section class="tasks" aria-label="مهام خطة البداية">
+        <article class="task complete">
+          <div class="task-number">01</div>
+          <div class="task-main"><h2>اختر نشاطاً محلياً واحداً</h2><p>ابحث عن جهة يناسبها العرض الذي اخترته، لا عن أي عميل عشوائي.</p><span class="check">✓</span></div>
+          <div class="output"><b>الناتج</b>جهة واضحة للتواصل معها</div>
+        </article>
+        <article class="task">
+          <div class="task-number">02</div>
+          <div class="task-main"><h2>خصّص الرسالة قبل نسخها</h2><p>أضف اسم الجهة واحتياجاً حقيقياً لاحظته قبل أن تضغط على الإرسال.</p><span class="check"></span></div>
+          <div class="output"><b>الناتج</b>رسالة شخصية وليست عامة</div>
+        </article>
+        <article class="task">
+          <div class="task-number">03</div>
+          <div class="task-main"><h2>أرسل إلى خمس جهات فقط</h2><p>اجعل العدد صغيراً كي تراجع الجودة وتبني عادة تواصل قابلة للاستمرار.</p><span class="check"></span></div>
+          <div class="output"><b>الناتج</b>بداية قابلة للقياس</div>
+        </article>
+        <p class="focus-note"><i></i>الجودة والمراجعة أفضل من الإرسال العشوائي إلى عدد كبير من الجهات.</p>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

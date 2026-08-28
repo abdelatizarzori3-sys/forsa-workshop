@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Changa:wght@500;600;700;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; }
+    .slide-container { width: 1280px; min-height: 720px; direction: rtl; display: flex; flex-direction: column; color: #f9f8f6; font-family: "IBM Plex Sans Arabic", sans-serif; background-color: #1c1c1c; background-image: linear-gradient(rgba(215,255,69,.075) 1px,transparent 1px), linear-gradient(90deg,rgba(215,255,69,.075) 1px,transparent 1px); background-size: 26px 26px; }
+    .top { display: flex; align-items: flex-start; justify-content: space-between; padding-top: 54px; padding-right: 76px; padding-left: 76px; }
+    .brand { display: flex; align-items: center; gap: 11px; color: #d7ff45; font-family: Changa, sans-serif; font-size: 26px; font-weight: 800; }
+    .mark { width: 31px; height: 31px; position: relative; background: #d7ff45; clip-path: polygon(8% 0,100% 0,100% 78%,76% 100%,76% 75%,31% 75%,31% 100%,0 100%,0 21%); }
+    .mark::after { content: ""; position: absolute; width: 10px; height: 10px; top: 8px; right: 9px; border-radius: 50%; background: #1c1c1c; }
+    .eyebrow { display: flex; align-items: center; gap: 8px; color: #cbd3c7; font-size: 12px; font-weight: 700; }
+    .eyebrow b { width: 8px; height: 8px; display: inline-block; background: #c24127; transform: rotate(45deg); }
+    h1 { max-width: 934px; margin-top: 27px; padding-right: 76px; padding-left: 76px; font-family: Changa, sans-serif; color: #f9f8f6; font-size: 55px; line-height: 1.24; letter-spacing: -2px; font-weight: 800; }
+    h1 em { color: #d7ff45; font-style: normal; }
+    .lead { max-width: 665px; margin-top: 13px; padding-right: 76px; padding-left: 76px; color: #c5cec4; font-size: 17px; line-height: 1.85; }
+    .path { display: grid; grid-template-columns: 1fr 1fr 1fr; margin-top: 44px; margin-right: 76px; margin-left: 76px; border-top: 1px solid rgba(249,248,246,.56); border-bottom: 1px solid rgba(249,248,246,.56); }
+    .step { min-height: 148px; padding-top: 24px; padding-right: 26px; padding-left: 26px; border-left: 1px solid rgba(249,248,246,.23); }
+    .step:last-child { border-left: 0; }
+    .step.active { background: #d7ff45; color: #1c1c1c; }
+    .num { display: flex; align-items: center; gap: 9px; color: #d7ff45; font-family: Changa, sans-serif; font-size: 18px; font-weight: 800; }
+    .num::after { content: ""; width: 35px; height: 1px; background: currentColor; }
+    .active .num { color: #1c1c1c; }
+    .step h2 { margin-top: 13px; font-family: Changa, sans-serif; font-size: 24px; letter-spacing: -1px; }
+    .step p { margin-top: 5px; max-width: 240px; color: #bfc9bf; font-size: 12px; line-height: 1.65; }
+    .active p { color: #394038; }
+    .bottom { display: flex; align-items: flex-end; justify-content: space-between; margin-top: auto; padding-top: 26px; padding-right: 76px; padding-left: 76px; min-height: 134px; background: #f9f8f6; color: #1c1c1c; }
+    .closing-note { max-width: 560px; font-family: Changa, sans-serif; font-size: 25px; line-height: 1.5; letter-spacing: -.8px; }
+    .note-tag { display: flex; align-items: flex-start; gap: 9px; max-width: 335px; margin-bottom: 24px; color: #5d655e; font-size: 11px; line-height: 1.7; }
+    .note-tag b { flex: none; width: 15px; height: 15px; margin-top: 2px; background: #c24127; transform: rotate(45deg); }
+    .lime-line { width: 122px; height: 8px; margin-top: 12px; background: #d7ff45; }
+  </style>
+</head>
+<body>
+  <div class="slide-container">
+    <header class="top">
+      <div class="brand"><span class="mark"></span><span>فرصة</span></div>
+      <p class="eyebrow"><b></b> ورشة بيع الخدمات</p>
+    </header>
+    <h1>افتح الورشة.<br />اختر عرضاً. <em>أرسله اليوم.</em></h1>
+    <p class="lead">«فرصة» تجعل الخطوات المرئية هي الخطوات التي تنفذها: خدمة محددة، سعر مدروس، ورسالة صادقة قابلة للتخصيص.</p>
+    <main class="path" aria-label="خلاصة مسار استخدام فرصة">
+      <section class="step"><div class="num">01</div><h2>عرض قابل للتسليم</h2><p>ابدأ بنتيجة صغيرة يفهمها العميل ويستطيع طلبها.</p></section>
+      <section class="step"><div class="num">02</div><h2>سعر يمكن فحصه</h2><p>انظر إلى الكلفة والهامش قبل أن تعد بأي شيء.</p></section>
+      <section class="step active"><div class="num">03</div><h2>خطوة حقيقية الآن</h2><p>خصّص الرسالة ثم أرسلها إلى جهة مناسبة.</p></section>
+    </main>
+    <footer class="bottom">
+      <div><p class="closing-note">الوضوح لا يصنع النتيجة وحده، لكنه يمنحك بداية قابلة للتنفيذ والقياس.</p><div class="lime-line"></div></div>
+      <p class="note-tag"><b></b><span>الأرقام تقديرية وقابلة للتعديل؛ الأداة لا تقدّم ضماناً للدخل أو نتائج مالية مؤكدة.</span></p>
+    </footer>
+  </div>
+</body>
+</html>

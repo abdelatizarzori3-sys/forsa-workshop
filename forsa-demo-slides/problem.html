@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Changa:wght@500;600;700;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; }
+    .slide-container { width: 1280px; min-height: 720px; direction: rtl; color: #1c1c1c; font-family: "IBM Plex Sans Arabic", sans-serif; background-color: #f9f8f6; background-image: linear-gradient(rgba(28,28,28,.055) 1px,transparent 1px),linear-gradient(90deg,rgba(28,28,28,.055) 1px,transparent 1px); background-size: 25px 25px; }
+    .top { display: flex; align-items: flex-end; justify-content: space-between; padding-top: 48px; padding-right: 74px; padding-left: 74px; }
+    .step { color: #c24127; font-family: Changa,sans-serif; font-size: 22px; font-weight: 800; }
+    h1 { margin-top: 8px; font-family: Changa,sans-serif; font-size: 42px; letter-spacing: -1.6px; line-height: 1.25; }
+    .sub { max-width: 340px; color: #5d655e; font-size: 15px; line-height: 1.75; }
+    .board { display: grid; grid-template-columns: 1fr 260px; gap: 34px; margin-top: 42px; padding-right: 74px; padding-left: 74px; }
+    .diagnosis { display: grid; gap: 13px; }
+    .row { display: grid; grid-template-columns: 52px 190px 1fr 165px; align-items: center; min-height: 104px; border-top: 2px solid #1c1c1c; background: rgba(249,248,246,.76); }
+    .row:last-child { border-bottom: 2px solid #1c1c1c; }
+    .number { display: grid; place-items: center; min-height: 102px; color: #6f766f; font-family: Changa,sans-serif; font-size: 16px; font-weight: 700; }
+    .fault { color: #c24127; font-family: Changa,sans-serif; font-size: 18px; font-weight: 700; }
+    .symptom { padding-right: 20px; padding-left: 20px; color: #59625a; font-size: 15px; line-height: 1.6; }
+    .change { display: flex; align-items: center; justify-content: center; min-height: 51px; margin-left: 16px; padding-top: 7px; padding-right: 10px; padding-left: 10px; background: #ece8de; color: #1c1c1c; font-size: 12px; font-weight: 700; }
+    .arrow { color: #c24127; font-size: 23px; }
+    .answer { display: flex; flex-direction: column; justify-content: space-between; min-height: 342px; padding-top: 24px; padding-right: 23px; padding-left: 23px; background: #d7ff45; border: 2px solid #1c1c1c; }
+    .answer .mini { display: flex; align-items: center; justify-content: space-between; font-size: 12px; font-weight: 700; }
+    .tag-mark { width: 28px; height: 28px; position: relative; background: #1c1c1c; clip-path: polygon(8% 0,100% 0,100% 78%,76% 100%,76% 75%,31% 75%,31% 100%,0 100%,0 21%); }
+    .tag-mark::after { content: ""; position: absolute; width: 9px; height: 9px; top: 8px; right: 8px; border-radius: 50%; background: #d7ff45; }
+    .answer h2 { font-family: Changa,sans-serif; font-size: 30px; line-height: 1.35; letter-spacing: -1px; }
+    .answer p { max-width: 190px; padding-top: 12px; border-top: 2px solid #1c1c1c; font-size: 13px; font-weight: 600; line-height: 1.8; }
+  </style>
+</head>
+<body>
+  <div class="slide-container">
+    <header class="top">
+      <div><div class="step">لماذا «فرصة»؟</div><h1>معظم البداية تتعطل قبل أول رسالة.</h1></div>
+      <p class="sub">ليست المشكلة دائماً في المهارة؛ بل في تحويلها إلى قرار محدد يمكن عرضه على عميل حقيقي.</p>
+    </header>
+    <main class="board">
+      <section class="diagnosis" aria-label="عوائق البداية وتحويلها">
+        <article class="row"><span class="number">01</span><strong class="fault">تشتت الخدمات</strong><p class="symptom">«أستطيع فعل كل شيء»؛ لذلك يصعب على العميل فهم ما سيحصل عليه الآن.</p><div class="change"><span class="arrow">←</span>&nbsp; خدمة صغيرة بنطاق محدد</div></article>
+        <article class="row"><span class="number">02</span><strong class="fault">سعر غير واضح</strong><p class="symptom">رقم يُكتب بسرعة من دون كلفة تنفيذ أو هدف يساعد على فحص جدواه.</p><div class="change"><span class="arrow">←</span>&nbsp; هامش وصافي لكل طلب</div></article>
+        <article class="row"><span class="number">03</span><strong class="fault">رسالة فضفاضة</strong><p class="symptom">حديث طويل عن المهارة من دون نتيجة ملموسة أو موعد تسليم واضح.</p><div class="change"><span class="arrow">←</span>&nbsp; نتيجة + نطاق + موعد</div></article>
+      </section>
+      <aside class="answer">
+        <div class="mini"><span>حلّ منظم</span><span class="tag-mark"></span></div>
+        <h2>فرصة تجعل الخطوة التالية مرئية.</h2>
+        <p>تركّز على عرض صغير، سعر مفهوم، ورسالة تستطيع تخصيصها وإرسالها.</p>
+      </aside>
+    </main>
+  </div>
+</body>
+</html>

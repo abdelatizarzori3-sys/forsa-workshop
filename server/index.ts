@@ -10,6 +10,25 @@ async function startServer() {
   const app = express();
   const server = createServer(app);
 
+  /**
+   * عقد مؤقت فاشل مغلق: لا توجد في هذا المشروع حسابات أو خدمة اشتراك موثقة
+   * بعد. لا يجوز للعميل فتح Pro من التخزين أو من متغير واجهة. عند تجهيز الدفع
+   * يستبدل هذا المعالج بتحقق خادمي من جلسة الحساب والاشتراك غير المنتهي فقط.
+   */
+  app.get("/api/me/entitlements/workshop-report", (_req, res) => {
+    res.status(503).set("Cache-Control", "no-store").json({
+      status: "purchase_setup_required",
+      code: "WORKSHOP_REPORT_ENTITLEMENT_UNCONFIGURED",
+    });
+  });
+
+  app.use("/api", (_req, res) => {
+    res
+      .status(404)
+      .set("Cache-Control", "no-store")
+      .json({ status: "not_found" });
+  });
+
   // Serve static files from dist/public in production
   const staticPath =
     process.env.NODE_ENV === "production"

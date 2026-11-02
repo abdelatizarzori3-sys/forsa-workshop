@@ -377,3 +377,19 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px s
   .print-report-button { display: none !important; }
   .print-report-head, .report-block { break-inside: avoid; }
 }
+
+
+/* Future interface: industrial workshop constellation */
+:root { --forge-night:#0a1016; --forge-metal:#17232e; --forge-signal:#ff9e57; --forge-light:#8ee7ff; }
+body { background:radial-gradient(circle at 78% 7%,rgba(255,158,87,.16),transparent 27rem),radial-gradient(circle at 8% 72%,rgba(87,201,255,.13),transparent 31rem),var(--forge-night)!important; color:#edf7ff; }
+body::after { content:""; position:fixed; inset:0; pointer-events:none; opacity:.19; background:repeating-linear-gradient(90deg,transparent 0 4.7rem,rgba(142,231,255,.18) 4.7rem 4.76rem),repeating-linear-gradient(0deg,transparent 0 4.7rem,rgba(255,158,87,.1) 4.7rem 4.76rem); mask-image:linear-gradient(145deg,#000,transparent 70%); }
+.workshop-shell,.workshop-main { position:relative; background:transparent!important; }
+.workshop-sidebar,.mobile-bar,.arrival-grid,.offer-cards,.kit-panel,.calculator-card,.profit-board,.proposal-card,.plan-card { border-color:rgba(142,231,255,.18)!important; background:linear-gradient(145deg,rgba(23,35,46,.94),rgba(8,15,22,.92))!important; box-shadow:0 1.2rem 3.5rem rgba(0,0,0,.24),inset 0 1px rgba(255,255,255,.05); }
+.workshop-sidebar { background:linear-gradient(180deg,#14212d,#080f16)!important; }
+.brand-mark,.station-brand { border:1px solid rgba(255,158,87,.65); box-shadow:0 0 1.7rem rgba(255,158,87,.22); }
+.primary-action,.send-button { background:linear-gradient(135deg,#ff9e57,#ffd36a)!important; color:#1e1309!important; box-shadow:0 .7rem 1.6rem rgba(255,158,87,.22); }
+.nav-stack button:hover,.offer-order:hover,.task-list li:hover { background:rgba(142,231,255,.09)!important; transform:translateX(-3px); }
+.price-editor input,.small-input-row input { background:rgba(6,14,21,.68)!important; border-color:rgba(142,231,255,.25)!important; color:#effaff!important; }
+.hero-ruler,.profit-rule { background:linear-gradient(90deg,transparent,#8ee7ff,#ff9e57,transparent)!important; }
+button:focus-visible,input:focus-visible { outline:2px solid var(--forge-light)!important; outline-offset:3px; }
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;}}

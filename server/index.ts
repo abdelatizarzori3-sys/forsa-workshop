@@ -1,52 +1,29 @@
 import express from "express";
-import { createServer } from "http";
-import path from "path";
-import { fileURLToPath } from "url";
+import { createServer } from "node:http";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import { createApp } from "./app";
+import { environmentAuth } from "./auth";
+import { databasePool, MysqlRepository } from "./mysql";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-async function startServer() {
-  const app = express();
+async function start() {
+  const pool = databasePool();
+  const app = createApp({ repository: new MysqlRepository(pool), authConfig: environmentAuth() });
   const server = createServer(app);
-
-  /**
-   * عقد مؤقت فاشل مغلق: لا توجد في هذا المشروع حسابات أو خدمة اشتراك موثقة
-   * بعد. لا يجوز للعميل فتح Pro من التخزين أو من متغير واجهة. عند تجهيز الدفع
-   * يستبدل هذا المعالج بتحقق خادمي من جلسة الحساب والاشتراك غير المنتهي فقط.
-   */
-  app.get("/api/me/entitlements/workshop-report", (_req, res) => {
-    res.status(503).set("Cache-Control", "no-store").json({
-      status: "purchase_setup_required",
-      code: "WORKSHOP_REPORT_ENTITLEMENT_UNCONFIGURED",
-    });
-  });
-
-  app.use("/api", (_req, res) => {
-    res
-      .status(404)
-      .set("Cache-Control", "no-store")
-      .json({ status: "not_found" });
-  });
-
-  // Serve static files from dist/public in production
-  const staticPath =
-    process.env.NODE_ENV === "production"
-      ? path.resolve(__dirname, "public")
-      : path.resolve(__dirname, "..", "dist", "public");
-
-  app.use(express.static(staticPath));
-
-  // Handle client-side routing - serve index.html for all routes
-  app.get("*", (_req, res) => {
-    res.sendFile(path.join(staticPath, "index.html"));
-  });
-
-  const port = process.env.PORT || 3000;
-
-  server.listen(port, () => {
-    console.log(`Server running on http://localhost:${port}/`);
-  });
+  if (process.env.NODE_ENV === "production") {
+    const root = path.join(path.dirname(fileURLToPath(import.meta.url)), "public");
+    app.use(express.static(root, { index: false }));
+    app.get(["/", "/workspace", "/404"], (_req, res) => { res.set("Cache-Control", "no-store").sendFile(path.join(root, "index.html")); });
+    app.use((_req, res) => res.status(404).type("text").send("Not found"));
+  } else {
+    const { createServer: createViteServer } = await import("vite");
+    const vite = await createViteServer({ configFile: path.resolve("vite.config.ts"), server: { middlewareMode: true, hmr: { server } }, appType: "spa" });
+    app.use(vite.middlewares);
+  }
+  const port = Number(process.env.PORT || 3000);
+  if (!Number.isInteger(port) || port < 1024 || port > 65535) throw new Error("Invalid PORT");
+  server.listen(port, "0.0.0.0", () => console.log(`Forsa workspace listening on ${port}`));
+  const close = () => server.close(() => { void pool.end().finally(() => process.exit(0)); });
+  process.once("SIGTERM", close); process.once("SIGINT", close);
 }
-
-startServer().catch(console.error);
+start().catch(error => { console.error("Forsa startup failed", error instanceof Error ? error.name : "UnknownError"); process.exitCode = 1; });

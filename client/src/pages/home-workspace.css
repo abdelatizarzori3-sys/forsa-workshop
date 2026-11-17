@@ -1,0 +1,12 @@
+.workshop-shell .workshop-pro-link { display: inline-flex; align-items: center; gap: 9px; color: #bddb70; font-size: 13px; font-weight: 700; text-decoration: none; border: 1px solid #89a954; border-radius: 7px; padding: 10px 14px; background: #21372c; }
+.workshop-shell .live-offer-brief { display: flex; flex-direction: column; justify-content: center; align-items: flex-start; gap: 20px; padding: 38px; color: #edf3e5; background: #203b2c; }
+.workshop-shell .live-offer-brief h3 { font-size: 27px; line-height: 1.5; margin: 0; }
+.workshop-shell .live-offer-brief > strong { font-size: 40px; color: #bddb70; }
+.workshop-shell .live-offer-brief p { color: #c1cfbe; font-size: 13px; }
+.workshop-shell .live-offer-brief dl { display: flex; flex-wrap: wrap; gap: 25px; padding-top: 20px; border-top: 1px solid #54684d; margin: 0; width: 100%; }
+.workshop-shell .live-offer-brief dt { color: #aebfa7; font-size: 11px; }
+.workshop-shell .live-offer-brief dd { margin: 7px 0 0; font-weight: 600; }
+.workshop-shell .kit-panel { background: #e5ebda; }
+.workshop-shell .live-kit-icon { position: absolute; top: 18%; left: 40%; color: #6d844c; transform: rotate(-12deg); }
+.workshop-shell .plan-card { background: #203b2c; }
+@media(max-width:600px) { .workshop-shell .live-offer-brief { padding: 28px; }.workshop-shell .topline-tools .workshop-pro-link { font-size: 11px; padding: 8px 10px; } }

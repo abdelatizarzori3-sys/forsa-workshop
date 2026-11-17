@@ -37,11 +37,9 @@ import {
   X,
 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
+import "./home-workspace.css";
 
-const heroImage = "/manus-storage/forsa-workbench-hero_fb023edf.png";
-const kitImage = "/manus-storage/forsa-service-kit_a1543a8c.png";
-const actionImage = "/manus-storage/forsa-action-path_5d99cb0e.png";
-const brandMark = "/manus-storage/forsa-mark_9f7dfcd0.png";
+const brandMark = "/forsa-icon.svg";
 
 type Offer = {
   id: string;
@@ -121,8 +119,8 @@ export default function Home() {
   const remainingTasks = taskLabels.length - tasks.filter(Boolean).length;
   const reportUnlocked = isWorkshopReportEntitlementActive(reportEntitlement);
   const reportEntitlementMessage = reportEntitlement?.status === "active"
-    ? "الاستحقاق الخادمي صالح حالياً لهذا التقرير."
-    : reportEntitlement?.message ?? "لن يفتح التقرير إلا بعد تحقق الخادم من اشتراك الحساب.";
+    ? "تجربة برو الخادمية صالحة حالياً لهذا التقرير."
+    : reportEntitlement?.message ?? "سجّل الدخول وابدأ تجربة برو من مساحة العروض والعملاء.";
 
   useEffect(() => {
     const raw = window.localStorage.getItem("forsa-workbench-state");
@@ -276,6 +274,7 @@ export default function Home() {
               </button>
             );
           })}
+          <a href="/workspace" className="nav-item workshop-pro-link"><FileText size={18} />العروض والعملاء — برو</a>
         </nav>
 
         <div className="sidebar-footer">
@@ -298,6 +297,7 @@ export default function Home() {
               const Icon = item.icon;
               return <button type="button" key={item.target} onClick={() => scrollTo(item.target)}><Icon size={17} />{item.label}</button>;
             })}
+            <a href="/workspace" className="workshop-pro-link">العروض والعملاء — برو</a>
           </div>
         )}
       </div>
@@ -305,12 +305,12 @@ export default function Home() {
       <section className="workshop-main">
         <header className="topline">
           <div>
-            <p className="eyebrow"><span className="eyebrow-dot" /> الأربعاء، 27 أغسطس</p>
+            <p className="eyebrow"><span className="eyebrow-dot" /> {new Intl.DateTimeFormat("ar", { dateStyle: "full" }).format(new Date())}</p>
             <h1>مرحباً بك في <strong>ورشة اليوم.</strong></h1>
           </div>
           <div className="topline-tools">
             <span className="location-note">ركّز على عرض واحد فقط</span>
-            <button type="button" className="avatar-button" aria-label="حسابك">م</button>
+            <a href="/workspace" className="workshop-pro-link">افتح مساحة برو <ArrowLeft size={16} /></a>
           </div>
         </header>
 
@@ -342,9 +342,11 @@ export default function Home() {
             </Button>
             <div className="hero-ruler" aria-hidden="true"><span /><span /><span /><span /><span /><span /><span /></div>
           </article>
-          <article className="arrival-visual" aria-label="مشهد ورشة عمل">
-            <img src={heroImage} alt="عدة عمل مكتبية بأوراق ومفكرة وحاسبة" />
-            <div className="image-stamp"><span>01</span><small>ابدأ<br />بسيطاً</small></div>
+          <article className="arrival-visual live-offer-brief" aria-label="ملخص عرضك الحالي">
+            <span className="paper-label">مسودة الورشة الحالية</span><h3>{selectedOffer.title}</h3>
+            <strong>{currencyNumber(price, currency)}</strong><p>{selectedOffer.detail}</p>
+            <dl><div><dt>كلفة التنفيذ</dt><dd>{currencyNumber(cost, currency)}</dd></div><div><dt>الفرق التخطيطي</dt><dd>{currencyNumber(netProfit, currency)}</dd></div></dl>
+            <a href="/workspace" className="workshop-pro-link">أنشئ عرضاً محفوظاً لحسابك <ArrowLeft size={17} /></a>
           </article>
         </section>
 
@@ -381,7 +383,7 @@ export default function Home() {
             })}
           </div>
           <div className="kit-panel">
-            <img src={kitImage} alt="بطاقات عرض وأدوات تسعير مصممة بأسلوب ورقي" />
+            <FileText size={90} className="live-kit-icon" aria-hidden="true" />
             <span className="evidence-tag evidence-tag-top">نطاق واضح</span>
             <span className="evidence-tag evidence-tag-bottom">سعر + تسليم</span>
             <div className="kit-panel-content">
@@ -452,7 +454,6 @@ export default function Home() {
           </article>
 
           <article className="plan-card">
-            <img src={actionImage} alt="مسار ورقي من المهارة إلى العرض المرسل" />
             <div className="plan-overlay" />
             <div className="plan-content">
               <div className="plan-title"><div><Target size={18} /><span>خطة 90 دقيقة</span></div><strong>{completion}%</strong></div>
@@ -481,7 +482,7 @@ export default function Home() {
 
           <article className="pro-report-card">
             <div className="pro-report-card-head">
-              <div><LockKeyhole size={20} /><span>ميزة برو محمية بالاشتراك</span></div>
+              <div><LockKeyhole size={20} /><span>تقرير محمي باستحقاق تجربة برو</span></div>
               <span className={reportUnlocked ? "pro-status pro-status-active" : "pro-status"}>{reportUnlocked ? "تم التحقق" : "مقفلة حتى التحقق"}</span>
             </div>
             <div className="report-identity-fields">
@@ -495,10 +496,10 @@ export default function Home() {
             <div className="pro-report-card-bottom">
               <div>
                 <p>{reportEntitlementMessage}</p>
-                <small>إعداد شراء الاشتراك داخل التطبيق ومزوده ما زال مطلوباً؛ لا توجد أكواد تفعيل أو فتح يدوي.</small>
+                <small>تجربة مجانية سبعة أيام من مساحة برو؛ التحصيل المدفوع غير مفعّل. تنزيل PDF لعروضك المحفوظة متاح داخل المساحة.</small>
               </div>
               <Button type="button" onClick={requestWorkshopReport} disabled={isCheckingReportEntitlement} className="pro-report-action">
-                <FileDown size={17} /> {isCheckingReportEntitlement ? "جارٍ التحقق..." : reportUnlocked ? "تحديث التقرير" : "التحقق من اشتراك التقرير"}
+                <FileDown size={17} /> {isCheckingReportEntitlement ? "جارٍ التحقق..." : reportUnlocked ? "تحديث التقرير" : "التحقق من تجربة برو"}
               </Button>
             </div>
           </article>

@@ -6,6 +6,9 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
+import { isWorkshopReportEntitlementActive, type WorkshopReportEntitlement, workshopReportEntitlementClient } from "@/features/pro-report/entitlement";
+import { WorkshopReport } from "@/features/pro-report/WorkshopReport";
+import { calculateWorkshopMetrics, createWorkshopReport, normalizeMoney, sanitizeReportText } from "@/features/pro-report/report-utils";
 import { toast } from "sonner";
 import {
   ArrowLeft,
@@ -17,9 +20,11 @@ import {
   Clipboard,
   Copy,
   Crosshair,
+  FileDown,
   FileText,
   Flame,
   LayoutDashboard,
+  LockKeyhole,
   Menu,
   MoreHorizontal,
   PenLine,
@@ -32,11 +37,9 @@ import {
   X,
 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
+import "./home-workspace.css";
 
-const heroImage = "/manus-storage/forsa-workbench-hero_fb023edf.png";
-const kitImage = "/manus-storage/forsa-service-kit_a1543a8c.png";
-const actionImage = "/manus-storage/forsa-action-path_5d99cb0e.png";
-const brandMark = "/manus-storage/forsa-mark_9f7dfcd0.png";
+const brandMark = "/forsa-icon.svg";
 
 type Offer = {
   id: string;
@@ -101,16 +104,23 @@ export default function Home() {
   const [tasks, setTasks] = useState<boolean[]>([false, false, false]);
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeStation, setActiveStation] = useState("dashboard");
+  const [workshopName, setWorkshopName] = useState("ورشة فرصة");
+  const [facilitatorName, setFacilitatorName] = useState("");
+  const [reportEntitlement, setReportEntitlement] = useState<WorkshopReportEntitlement | null>(null);
+  const [isCheckingReportEntitlement, setIsCheckingReportEntitlement] = useState(false);
+  const [reportGeneratedAt, setReportGeneratedAt] = useState<Date | null>(null);
 
   const selectedOffer = useMemo(
     () => offers.find((offer) => offer.id === offerId) ?? offers[0],
     [offerId],
   );
-  const netProfit = Math.max(price - cost, 0);
-  const margin = price > 0 ? Math.round((netProfit / price) * 100) : 0;
-  const ordersNeeded = netProfit > 0 ? Math.ceil(target / netProfit) : 0;
+  const { netProfit, margin, ordersNeeded } = useMemo(() => calculateWorkshopMetrics(price, cost, target), [price, cost, target]);
   const completion = Math.round((tasks.filter(Boolean).length / taskLabels.length) * 100);
   const remainingTasks = taskLabels.length - tasks.filter(Boolean).length;
+  const reportUnlocked = isWorkshopReportEntitlementActive(reportEntitlement);
+  const reportEntitlementMessage = reportEntitlement?.status === "active"
+    ? "تجربة برو الخادمية صالحة حالياً لهذا التقرير."
+    : reportEntitlement?.message ?? "سجّل الدخول وابدأ تجربة برو من مساحة العروض والعملاء.";
 
   useEffect(() => {
     const raw = window.localStorage.getItem("forsa-workbench-state");
@@ -123,13 +133,17 @@ export default function Home() {
         target?: number;
         currency?: string;
         tasks?: boolean[];
+        workshopName?: string;
+        facilitatorName?: string;
       };
       if (stored.offerId && offers.some((offer) => offer.id === stored.offerId)) setOfferId(stored.offerId);
-      if (typeof stored.price === "number") setPrice(stored.price);
-      if (typeof stored.cost === "number") setCost(stored.cost);
-      if (typeof stored.target === "number") setTarget(stored.target);
+      if (typeof stored.price === "number") setPrice(normalizeMoney(stored.price));
+      if (typeof stored.cost === "number") setCost(normalizeMoney(stored.cost));
+      if (typeof stored.target === "number") setTarget(normalizeMoney(stored.target));
       if (typeof stored.currency === "string") setCurrency(stored.currency);
-      if (Array.isArray(stored.tasks) && stored.tasks.length === taskLabels.length) setTasks(stored.tasks);
+      if (Array.isArray(stored.tasks) && stored.tasks.length === taskLabels.length) setTasks(stored.tasks.map((task) => task === true));
+      if (typeof stored.workshopName === "string") setWorkshopName(sanitizeReportText(stored.workshopName, 80));
+      if (typeof stored.facilitatorName === "string") setFacilitatorName(sanitizeReportText(stored.facilitatorName, 80));
     } catch {
       window.localStorage.removeItem("forsa-workbench-state");
     }
@@ -138,12 +152,12 @@ export default function Home() {
   useEffect(() => {
     window.localStorage.setItem(
       "forsa-workbench-state",
-      JSON.stringify({ offerId, price, cost, target, currency, tasks }),
+      JSON.stringify({ offerId, price, cost, target, currency, tasks, workshopName, facilitatorName }),
     );
-  }, [offerId, price, cost, target, currency, tasks]);
+  }, [offerId, price, cost, target, currency, tasks, workshopName, facilitatorName]);
 
   useEffect(() => {
-    const stations = ["dashboard", "offers", "calculator", "plan"];
+    const stations = ["dashboard", "offers", "calculator", "plan", "pro-report"];
     const observed = stations
       .map((id) => document.getElementById(id))
       .filter((element): element is HTMLElement => Boolean(element));
@@ -159,6 +173,17 @@ export default function Home() {
   }, []);
 
   const proposalText = `مرحباً،\n\n${selectedOffer.pitch}\n\nالسعر المقترح: ${currencyNumber(price, currency)}.\nمدة التسليم: ${selectedOffer.duration}.\n\nإذا كانت هذه النتيجة تناسب احتياجكم، أرسل لي التفاصيل لنبدأ اليوم.`;
+  const report = useMemo(() => createWorkshopReport({
+    workshopName,
+    facilitatorName,
+    offer: selectedOffer,
+    price,
+    cost,
+    target,
+    currency,
+    tasks: taskLabels.map((label, index) => ({ label, completed: tasks[index] === true })),
+    generatedAt: reportGeneratedAt ?? new Date(),
+  }), [workshopName, facilitatorName, selectedOffer, price, cost, target, currency, tasks, reportGeneratedAt]);
 
   function chooseOffer(offer: Offer) {
     setOfferId(offer.id);
@@ -179,6 +204,37 @@ export default function Home() {
     setTasks((current) => current.map((task, taskIndex) => (taskIndex === index ? checked : task)));
   }
 
+  async function requestWorkshopReport() {
+    if (sanitizeReportText(workshopName, 80).length < 2) {
+      toast.error("اكتب اسم الورشة أولاً", { description: "سيظهر الاسم في رأس التقرير المطبوع." });
+      return;
+    }
+
+    setIsCheckingReportEntitlement(true);
+    const entitlement = await workshopReportEntitlementClient.get();
+    setReportEntitlement(entitlement);
+    setIsCheckingReportEntitlement(false);
+
+    if (isWorkshopReportEntitlementActive(entitlement)) {
+      setReportGeneratedAt(new Date());
+      toast.success("تم التحقق من اشتراك التقرير", { description: "أصبح التقرير جاهزاً للطباعة أو الحفظ PDF." });
+      return;
+    }
+
+    setReportGeneratedAt(null);
+    toast.message("التقرير الاحترافي ما زال مقفلاً", {
+      description: entitlement.status === "active" ? "انتهت صلاحية الاستحقاق قبل فتح التقرير." : entitlement.message,
+    });
+  }
+
+  function printWorkshopReport() {
+    if (!isWorkshopReportEntitlementActive(reportEntitlement)) {
+      toast.error("انتهى التحقق من الاستحقاق", { description: "تحقق من اشتراك التقرير مرة أخرى قبل الطباعة." });
+      return;
+    }
+    window.print();
+  }
+
   function scrollTo(id: string) {
     setActiveStation(id);
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -190,6 +246,7 @@ export default function Home() {
     { label: "خدمة واحدة", icon: Sparkles, target: "offers" },
     { label: "آلة التسعير", icon: Calculator, target: "calculator" },
     { label: "خطة التنفيذ", icon: Target, target: "plan" },
+    { label: "تقرير الورشة Pro", icon: FileDown, target: "pro-report" },
   ];
 
   return (
@@ -217,6 +274,7 @@ export default function Home() {
               </button>
             );
           })}
+          <a href="/workspace" className="nav-item workshop-pro-link"><FileText size={18} />العروض والعملاء — برو</a>
         </nav>
 
         <div className="sidebar-footer">
@@ -239,6 +297,7 @@ export default function Home() {
               const Icon = item.icon;
               return <button type="button" key={item.target} onClick={() => scrollTo(item.target)}><Icon size={17} />{item.label}</button>;
             })}
+            <a href="/workspace" className="workshop-pro-link">العروض والعملاء — برو</a>
           </div>
         )}
       </div>
@@ -246,12 +305,12 @@ export default function Home() {
       <section className="workshop-main">
         <header className="topline">
           <div>
-            <p className="eyebrow"><span className="eyebrow-dot" /> الأربعاء، 27 أغسطس</p>
+            <p className="eyebrow"><span className="eyebrow-dot" /> {new Intl.DateTimeFormat("ar", { dateStyle: "full" }).format(new Date())}</p>
             <h1>مرحباً بك في <strong>ورشة اليوم.</strong></h1>
           </div>
           <div className="topline-tools">
             <span className="location-note">ركّز على عرض واحد فقط</span>
-            <button type="button" className="avatar-button" aria-label="حسابك">م</button>
+            <a href="/workspace" className="workshop-pro-link">افتح مساحة برو <ArrowLeft size={16} /></a>
           </div>
         </header>
 
@@ -283,9 +342,11 @@ export default function Home() {
             </Button>
             <div className="hero-ruler" aria-hidden="true"><span /><span /><span /><span /><span /><span /><span /></div>
           </article>
-          <article className="arrival-visual" aria-label="مشهد ورشة عمل">
-            <img src={heroImage} alt="عدة عمل مكتبية بأوراق ومفكرة وحاسبة" />
-            <div className="image-stamp"><span>01</span><small>ابدأ<br />بسيطاً</small></div>
+          <article className="arrival-visual live-offer-brief" aria-label="ملخص عرضك الحالي">
+            <span className="paper-label">مسودة الورشة الحالية</span><h3>{selectedOffer.title}</h3>
+            <strong>{currencyNumber(price, currency)}</strong><p>{selectedOffer.detail}</p>
+            <dl><div><dt>كلفة التنفيذ</dt><dd>{currencyNumber(cost, currency)}</dd></div><div><dt>الفرق التخطيطي</dt><dd>{currencyNumber(netProfit, currency)}</dd></div></dl>
+            <a href="/workspace" className="workshop-pro-link">أنشئ عرضاً محفوظاً لحسابك <ArrowLeft size={17} /></a>
           </article>
         </section>
 
@@ -322,7 +383,7 @@ export default function Home() {
             })}
           </div>
           <div className="kit-panel">
-            <img src={kitImage} alt="بطاقات عرض وأدوات تسعير مصممة بأسلوب ورقي" />
+            <FileText size={90} className="live-kit-icon" aria-hidden="true" />
             <span className="evidence-tag evidence-tag-top">نطاق واضح</span>
             <span className="evidence-tag evidence-tag-bottom">سعر + تسليم</span>
             <div className="kit-panel-content">
@@ -347,7 +408,7 @@ export default function Home() {
             <div className="price-editor">
               <label htmlFor="price">سعر العرض الواحد</label>
               <div className="input-with-currency">
-                <Input id="price" type="number" min="0" value={price} onChange={(event) => setPrice(Math.max(0, Number(event.target.value)))} />
+                <Input id="price" type="number" min="0" max="1000000" value={price} onChange={(event) => setPrice(normalizeMoney(Number(event.target.value)))} />
                 <select value={currency} onChange={(event) => setCurrency(event.target.value)} aria-label="العملة">
                   <option>ر.س</option><option>د.إ</option><option>د.م</option><option>د.أ</option><option>USD</option>
                 </select>
@@ -356,8 +417,8 @@ export default function Home() {
               <div className="range-labels"><span>منخفض</span><span>سعر متخصص</span></div>
             </div>
             <div className="small-input-row">
-              <label htmlFor="cost">كلفة التنفيذ <Input id="cost" type="number" min="0" value={cost} onChange={(event) => setCost(Math.max(0, Number(event.target.value)))} /></label>
-              <label htmlFor="target">هدف اليوم <Input id="target" type="number" min="0" value={target} onChange={(event) => setTarget(Math.max(0, Number(event.target.value)))} /></label>
+              <label htmlFor="cost">كلفة التنفيذ <Input id="cost" type="number" min="0" max="1000000" value={cost} onChange={(event) => setCost(normalizeMoney(Number(event.target.value)))} /></label>
+              <label htmlFor="target">هدف اليوم <Input id="target" type="number" min="0" max="1000000" value={target} onChange={(event) => setTarget(normalizeMoney(Number(event.target.value)))} /></label>
             </div>
             <div className="calculator-hint"><Crosshair size={16} /> غيّر الأرقام حتى تجد سعراً تستطيع تنفيذه بثقة.</div>
           </article>
@@ -371,7 +432,7 @@ export default function Home() {
               <div><p>صافي كل طلب</p><strong>{currencyNumber(netProfit, currency)}</strong><span>{netProfit > 0 ? "بعد كلفة التنفيذ" : "راجع الكلفة والسعر"}</span></div>
             </div>
             <div className="profit-rule" />
-            <div className="profit-target"><span>لتقترب من هدفك</span><strong>{ordersNeeded || "—"} <small>طلبات</small></strong></div>
+            <div className="profit-target"><span>لتقترب من هدفك</span><strong>{ordersNeeded ?? "—"} <small>طلبات</small></strong></div>
             <div className="profit-advice"><WalletCards size={16} /> {margin >= 60 ? "الهامش مريح كبداية — ثبّت نطاق العمل." : "الهامش ضيّق — قلّل النطاق أو عدّل السعر."}</div>
           </article>
         </section>
@@ -393,7 +454,6 @@ export default function Home() {
           </article>
 
           <article className="plan-card">
-            <img src={actionImage} alt="مسار ورقي من المهارة إلى العرض المرسل" />
             <div className="plan-overlay" />
             <div className="plan-content">
               <div className="plan-title"><div><Target size={18} /><span>خطة 90 دقيقة</span></div><strong>{completion}%</strong></div>
@@ -408,6 +468,43 @@ export default function Home() {
               <div className="next-action"><span>{remainingTasks === 0 ? "أكملت خطة البداية." : `بقيت ${remainingTasks} خطوات قصيرة.`}</span><ChevronLeft size={17} /></div>
             </div>
           </article>
+        </section>
+
+        <section id="pro-report" className="pro-report-section" aria-labelledby="pro-report-heading">
+          <div className="section-heading pro-report-heading">
+            <div>
+              <span className="section-number">04</span>
+              <h2 id="pro-report-heading">تقرير ورشة احترافي <em>Pro</em></h2>
+              <p>اجمع العرض والحساب وخطة العمل الحالية في تقرير قابل للطباعة أو الحفظ PDF من المتصفح.</p>
+            </div>
+            <span className="paper-note">هوية الورشة أولاً</span>
+          </div>
+
+          <article className="pro-report-card">
+            <div className="pro-report-card-head">
+              <div><LockKeyhole size={20} /><span>تقرير محمي باستحقاق تجربة برو</span></div>
+              <span className={reportUnlocked ? "pro-status pro-status-active" : "pro-status"}>{reportUnlocked ? "تم التحقق" : "مقفلة حتى التحقق"}</span>
+            </div>
+            <div className="report-identity-fields">
+              <label htmlFor="workshop-name">اسم الورشة
+                <Input id="workshop-name" maxLength={80} value={workshopName} onChange={(event) => setWorkshopName(sanitizeReportText(event.target.value, 80))} placeholder="مثال: ورشة بيع الخدمات" />
+              </label>
+              <label htmlFor="facilitator-name">اسم الميسّر <small>اختياري</small>
+                <Input id="facilitator-name" maxLength={80} value={facilitatorName} onChange={(event) => setFacilitatorName(sanitizeReportText(event.target.value, 80))} placeholder="الاسم الذي يظهر في التقرير" />
+              </label>
+            </div>
+            <div className="pro-report-card-bottom">
+              <div>
+                <p>{reportEntitlementMessage}</p>
+                <small>تجربة مجانية سبعة أيام من مساحة برو؛ التحصيل المدفوع غير مفعّل. تنزيل PDF لعروضك المحفوظة متاح داخل المساحة.</small>
+              </div>
+              <Button type="button" onClick={requestWorkshopReport} disabled={isCheckingReportEntitlement} className="pro-report-action">
+                <FileDown size={17} /> {isCheckingReportEntitlement ? "جارٍ التحقق..." : reportUnlocked ? "تحديث التقرير" : "التحقق من تجربة برو"}
+              </Button>
+            </div>
+          </article>
+
+          {reportUnlocked && reportGeneratedAt && <WorkshopReport report={report} onPrint={printWorkshopReport} />}
         </section>
 
         <footer className="workshop-footer">
